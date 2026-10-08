@@ -95,8 +95,23 @@ Allure results unchanged. Contaminated local discovery evidence is preserved in
 The first cloud report was generated in its separate fresh regression job and was
 verified independently.
 
+The fix was merged through [PR #1](https://github.com/The-Whale-1/LaPoire-Website/pull/1)
+at commit `5ee4ddb69c122529bd0629d59b290d91278ec27e` after cloud framework checks passed.
+The [final patched cloud regression](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37841095390)
+completed with **37 passed, 1 failed, 10 skipped, 0 flaky, and 0 healed** in
+194.5 seconds. Its sole failure remains Chocolates navigation to `/list/undefined`.
+The cloud install reported zero vulnerabilities. Allure generation, summary, and
+upload succeeded; the downloaded [final report artifact](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37841095390/artifacts/11577338407)
+contains both HTML reports, matching 48-result Allure/JSON summaries, and no raw
+browser-output directory. The original failed report remains separately available.
+
+The saved heartbeat recurrence was inspected directly and runs at 09:00 Cairo
+daily. A signed-out browser session prevented independently dispatching a manual
+run; the published manual workflow definition is accepted. No settings or credentials
+were changed during this UI inspection.
+
 The workflow is configured for daily 06:00 Africa/Cairo and manual runs. A Codex
-follow-up is active at 07:00 for daily reporting, failure analysis and test improvement.
+follow-up is active at 09:00 for daily reporting, failure analysis and test improvement.
 Desktop follow-ups require the computer and app running; GitHub tests run independently.
 
 Unverified scope: authenticated/customer flows, submitted orders or payments, mobile
