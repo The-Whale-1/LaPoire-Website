@@ -1,0 +1,28 @@
+{
+  "name": "lapoire-quality-ecosystem",
+  "private": true,
+  "description": "JavaScript Playwright POM tests, Allure reports and scheduled cloud regression for La Poire",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node scripts/js/run-tests.cjs",
+    "test:ci": "node scripts/js/run-tests.cjs",
+    "test:smoke": "node scripts/js/run-tests.cjs --grep @smoke",
+    "test:list": "playwright test --list",
+    "test:unit": "node --test e2e/unit/*.test.js scripts/js/unit/*.test.cjs",
+    "report": "node scripts/js/generate-report.cjs",
+    "report:js": "node scripts/js/generate-report.cjs",
+    "report:summary": "node scripts/js/summarize.cjs",
+    "report:notify": "node scripts/js/notify.cjs",
+    "report:open": "allure open artifacts/js/allure-report",
+    "report:python": "node scripts/generate-report.mjs",
+    "report:new": "node scripts/generate-report.mjs --new"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "allure": "3.19.1",
+    "allure-js-commons": "3.13.0",
+    "allure-playwright": "3.13.0",
+    "dotenv": "18.0.6",
+    "nodemailer": "10.0.16"
+  }
+}

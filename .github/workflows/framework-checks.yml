@@ -1,0 +1,43 @@
+name: JavaScript framework checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lapoire-framework-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      RUN_AUTH_TESTS: 'false'
+      CI: 'true'
+      TEST_PROJECTS: chromium
+    steps:
+      - name: Check out test code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Check framework helpers offline
+        run: npm run test:unit
+
+      - name: Check Playwright test discovery
+        run: npm run test:list
+
