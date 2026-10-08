@@ -10,7 +10,7 @@ Allure generation, summary generation, and artifact upload succeeded. The summar
 
 The [offline framework checks](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839847013) succeeded: 18 unit checks passed and 48 Playwright cases were discovered. The notification step also succeeded with no optional delivery destination configured; this confirms the Actions/chat reporting path, not SMTP or webhook receipt.
 
-GitHub accepted the daily and manual workflow definitions. The daily schedule is configured for 06:00 Cairo; its first actual scheduled event has not yet been observed and is due on 2026-10-09. The Codex heartbeat `la-poire-daily-quality-review` is ACTIVE at 07:00 Cairo daily in this chat; its first scheduled review has not yet been observed. The initial scope is public browsing/cart journeys. Authentication is disabled, and email/webhook delivery remain optional extensions.
+GitHub accepted the daily and manual workflow definitions. The daily schedule is configured for 06:00 Cairo; its first actual scheduled event has not yet been observed and is due on 2026-10-09. The Codex heartbeat `la-poire-daily-quality-review` is ACTIVE at 09:00 Cairo daily in this chat; its first scheduled review has not yet been observed. The initial scope is public browsing/cart journeys. Authentication is disabled, and email/webhook delivery remain optional extensions.
 
 | Component | Current state | Remaining verification |
 | --- | --- | --- |
@@ -21,9 +21,11 @@ GitHub accepted the daily and manual workflow definitions. The daily schedule is
 | Authenticated cases | Disabled for the initial public browsing/cart scope | Optional later: configure a dedicated staging account |
 | Delivered report | Initial result reported through GitHub Actions and this Codex chat | Observe the first recurring review; no SMTP/webhook receipt claimed |
 | Optional email/webhook | SMTP email and/or generic JSON webhook | Optional later: configure a destination and verify delivery |
-| Ongoing Codex maintenance | ACTIVE heartbeat: 07:00 Cairo daily in this chat | Observe the first review; computer and Codex app must be running |
+| Ongoing Codex maintenance | ACTIVE heartbeat: 09:00 Cairo daily in this chat | Observe the first review; computer and Codex app must be running |
 
 The selected repository is public. Its Actions artifacts are visible to signed-in users with repository read access. Treat source, run logs, and artifacts as public evidence. The initial workflow therefore exercises public browsing/cart journeys and does not receive account credentials. Account/customer evidence would need restricted handling before authenticated coverage is enabled.
+
+The [patched full regression](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37841095390), after [PR #1](https://github.com/The-Whale-1/LaPoire-Website/pull/1), also completed with **37 passed, 1 failed, 10 skipped, 0 flaky, and 0 healed** in 194.5 seconds. Dependency installation reported zero vulnerabilities. Allure generation, summary and upload succeeded; the downloaded [latest report](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37841095390/artifacts/11577338407) contains both HTML reports with matching 48-result counts. Chocolates navigation remains the sole website failure. The saved heartbeat recurrence was checked directly: daily 09:00 Cairo. Manual UI dispatch remains unverified because the inspected browser session was signed out; no login or settings change was attempted.
 
 ## Configure variables and secrets once
 
@@ -60,7 +62,7 @@ Authentication being disabled is visible as skipped authenticated cases. A guest
 3. For future runs, check the test step, run summary, and `lapoire-js-<run id>-<attempt>` artifact when the run completes. The initial run verified that a genuine staging defect makes the workflow fail while its report remains downloadable.
 4. To run on demand, open **Actions → La Poire daily regression → Run workflow**. Choose `main`, `all`, and `chromium`. Manual runs from other branches are intentionally skipped by the live job; pull requests receive offline framework checks. The workflow requests `contents: read` and does not push source changes.
 5. Verify that the summary/report links open and Codex can read the completed run. If email/webhook delivery is configured later, verify receipt separately.
-6. Observe the first 06:00 Cairo scheduled run and the 07:00 Codex review on 2026-10-09. This verifies actual scheduled execution separately from the accepted workflow and heartbeat definitions.
+6. Observe the first 06:00 Cairo scheduled run and the 09:00 Codex review on 2026-10-09. This verifies actual scheduled execution separately from the accepted workflow and heartbeat definitions.
 
 The source workflow pins verified official action revisions: [checkout v7.0.1](https://github.com/actions/checkout/commit/3d3c42e5aac5ba805825da76410c181273ba90b1), [setup-node v7.1.0](https://github.com/actions/setup-node/commit/949feb2413d6458794dcd2491c4babbbce0c15c1), and [upload-artifact v7.0.2](https://github.com/actions/upload-artifact/commit/cf430e030ddbb5b0abf93d22962f4752f3646cd9), checked on 2026-10-08. Update these deliberately when maintaining the framework.
 

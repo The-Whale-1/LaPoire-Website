@@ -30,6 +30,8 @@ The initial result was reported in Actions and this Codex chat. The notification
 
 The separate `framework-checks.yml` workflow validates helpers and Playwright test discovery offline on pull requests and pushes. It receives no staging account or notification secrets. Pushes to `main` also trigger the live regression workflow; live tests use only the reviewed default branch. Test code is not automatically deployed or rewritten by the test runner's scheduled workflow.
 
+After [PR #1](https://github.com/The-Whale-1/LaPoire-Website/pull/1) patched Allure's transitive Handlebars dependency and isolated discovery from report generation, the [final full cloud regression](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37841095390) again produced **37 passed, 1 failed, 10 skipped, 0 flaky, and 0 healed** in 194.5 seconds. Its install reported zero vulnerabilities, and the downloaded [latest artifact](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37841095390/artifacts/11577338407) verified both HTML reports and matching 48-result summaries. The original failed run remains available; Chocolates navigation has not been hidden or healed.
+
 ## Locator healing loop
 
 Self-healing is limited to reviewed alternative locators for the same intended element. The framework attempts its primary locator first, then may use a declared alternative after confirming that exactly one visible element matches. A fallback use must be recorded so Codex can inspect why the primary locator stopped working and, when appropriate, update the page object permanently.
@@ -40,7 +42,7 @@ Automatic fallback is not an unattended AI browsing agent. It does not grant an 
 
 ## Codex maintenance loop
 
-The Codex heartbeat `la-poire-daily-quality-review` is ACTIVE at 07:00 Cairo daily in this chat. Its first scheduled review has not yet been observed. It owns review of failures, locator drift, missing runs, and meaningful coverage improvements within the authorized public browsing/cart scope. The computer and Codex app must be running, with repository/tool access available, for this desktop follow-up to execute. GitHub's cloud test runner continues independently of it.
+The Codex heartbeat `la-poire-daily-quality-review` is ACTIVE at 09:00 Cairo daily in this chat. Its first scheduled review has not yet been observed. It owns review of failures, locator drift, missing runs, and meaningful coverage improvements within the authorized public browsing/cart scope. The computer and Codex app must be running, with repository/tool access available, for this desktop follow-up to execute. GitHub's cloud test runner continues independently of it.
 
 For each meaningful new result, Codex should:
 
@@ -57,7 +59,7 @@ The recurring reviewer should check that the most recent completed cloud run is 
 
 Coverage is measured by executed assertions, not by a large test count. Use `npm run test:list` to enumerate implemented JavaScript cases and the run summary to identify passed, failed, and skipped scope. Existing Python coverage is separate and must not be counted as JavaScript cloud coverage unless its runner is deliberately added.
 
-Within the initial scope, prioritize public product discovery, categories/search, product details, cart arithmetic and persistence, delivery location, language, and login/registration form reachability. Authenticated account and checkout-review coverage require explicit later opt-in and staging fixtures. Desktop Chromium is the initial baseline; optional Firefox/WebKit execution needs separate verification. The current page objects target desktop layouts. Mobile coverage requires dedicated locators and responsive journeys before a mobile project is enabled; real devices additionally require a device service or dedicated hardware.
+Within the initial scope, prioritize public product discovery, categories/search, product details, cart arithmetic and persistence, delivery location, language, and login form reachability. Authenticated account and checkout-review coverage require explicit later opt-in and staging fixtures. Desktop Chromium is the initial baseline; optional Firefox/WebKit execution needs separate verification. The current page objects target desktop layouts. Mobile coverage requires dedicated locators and responsive journeys before a mobile project is enabled; real devices additionally require a device service or dedicated hardware.
 
 Authenticated flows need a dedicated staging account, valid saved addresses, and stable in-stock fixture products. Changes to the site's catalog or delivery areas may require fixture updates. Invalid fixtures should produce diagnostics; they should not be treated as proof of a website defect or automatically replaced by arbitrary data.
 
