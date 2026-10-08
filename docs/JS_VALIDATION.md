@@ -63,7 +63,38 @@ Screenshots, videos, traces and automatic DOM snapshots are disabled; report eve
 redact secrets and omit authenticated diagnostics. Raw browser-output directories
 are excluded from cloud publication.
 
-Cloud publication and a first cloud report artifact are still being verified.
+Source was published at commit `8c11dde10f7087a13f2d997ce1aa37f699493a93`.
+The [first cloud run](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839846812)
+completed with **37 passed, 1 failed, 10 skipped, 0 flaky, and 0 healed** in
+202.2 seconds. The sole failed case is Chocolates opening `/list/undefined`.
+All eight guest-cart cases and all five company information cases passed.
+The failed test exit remained 1 and the workflow remained failed.
+
+Allure generated 48 results; report generation, summary, artifact upload, and
+the configured notification step succeeded. The downloaded
+[report artifact](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839846812/artifacts/11576543769)
+contains both HTML reports and matching summary counts, with no raw browser output
+directory. It expires on 22 October 2026. Optional SMTP/webhook destinations are
+not configured; no email or webhook delivery is claimed.
+The [cloud framework checks](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839847013)
+also passed all 18 offline tests and discovered the 48 cases.
+
+## Dependency and discovery correction
+
+The initial cloud install reported a transitive Handlebars advisory through Allure.
+The lockfile now resolves Handlebars 4.7.10, preserving every direct dependency pin.
+A clean locked install, zero-finding npm audit, all 18 offline checks, and discovery
+of 48 cases passed. Patched Allure regenerated the original two executed information
+results successfully in a separate ignored report directory.
+
+Discovery now explicitly uses the list reporter. The previous command activated
+configured reporters and could mix synthetic discovery records into a local result
+directory. Fingerprints confirm the corrected discovery command leaves executed
+Allure results unchanged. Contaminated local discovery evidence is preserved in
+`artifacts/js-discovery-contamination-proof/`; it was never a cloud test report.
+The first cloud report was generated in its separate fresh regression job and was
+verified independently.
+
 The workflow is configured for daily 06:00 Africa/Cairo and manual runs. A Codex
 follow-up is active at 07:00 for daily reporting, failure analysis and test improvement.
 Desktop follow-ups require the computer and app running; GitHub tests run independently.
