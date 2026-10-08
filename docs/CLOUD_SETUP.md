@@ -1,21 +1,27 @@
 # Cloud execution and result delivery
 
-The JavaScript test ecosystem runs on GitHub Actions after these files are published to the repository's default branch. The selected repository is [The-Whale-1/LaPoire-Website](https://github.com/The-Whale-1/LaPoire-Website), using `main`. It does not need a laptop to execute the browser tests. A repository and workflow file on disk alone do not activate cloud execution. The existing Python suite and its reports stay separate.
+The JavaScript test ecosystem is published to [The-Whale-1/LaPoire-Website](https://github.com/The-Whale-1/LaPoire-Website) on `main`. GitHub Actions executes its browser tests without a laptop. The first cloud run completed, and its Allure/Playwright reports and summary were verified. A real website defect remains a failed test. The existing Python suite and its reports stay separate.
 
 ## Activation status
 
-The workflow is prepared locally. Cloud publication and a first completed workflow must be verified before calling this an active service. The initial scope is public browsing/cart journeys, with results in GitHub Actions and this Codex chat. Authentication is disabled; email and webhook delivery are optional extensions. Record the first run URL here when activation is complete.
+Source publication succeeded on 2026-10-08 at [commit 8c11dde](https://github.com/The-Whale-1/LaPoire-Website/commit/8c11dde10f7087a13f2d997ce1aa37f699493a93). The [first regression run](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839846812) completed with **37 passed, 1 failed, 10 skipped, 0 flaky, and 0 healed**, out of 48 cases. Its test duration was 202.204 seconds. The failure is Chocolates category navigation reaching `/list/undefined`; the failed workflow correctly preserves this staging defect. The 10 skipped cases are outside the enabled public scope.
 
-| Component | Prepared behavior | Required for activation |
+Allure generation, summary generation, and artifact upload succeeded. The summary matched the test results, and the downloaded [report artifact](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839846812/artifacts/11576543769) was verified to contain both HTML reports and 48 Allure results, with no raw `test-results` directory. The artifact is `lapoire-js-37839846812-1`, ID `11576543769`, and expires on 2026-10-22.
+
+The [offline framework checks](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839847013) succeeded: 18 unit checks passed and 48 Playwright cases were discovered. The notification step also succeeded with no optional delivery destination configured; this confirms the Actions/chat reporting path, not SMTP or webhook receipt.
+
+GitHub accepted the daily and manual workflow definitions. The daily schedule is configured for 06:00 Cairo; its first actual scheduled event has not yet been observed and is due on 2026-10-09. The Codex heartbeat `la-poire-daily-quality-review` is ACTIVE at 07:00 Cairo daily in this chat; its first scheduled review has not yet been observed. The initial scope is public browsing/cart journeys. Authentication is disabled, and email/webhook delivery remain optional extensions.
+
+| Component | Current state | Remaining verification |
 | --- | --- | --- |
-| Source code | JavaScript POM, Playwright tests, locked npm dependencies | Publish reviewed source to the selected repository |
-| Daily regression | Every day at 06:00 in `Africa/Cairo` | Enable GitHub Actions; workflow must be on the default branch |
-| Run on demand | Actions → La Poire daily regression → Run workflow | Select the default branch, suite, and desktop browser |
-| Allure and Playwright reports | Reports, JSON results, and Markdown summary attached to each run | Complete the first cloud run and verify its artifact |
+| Source code | Published JavaScript POM, Playwright tests, locked npm dependencies | Publication verified at the linked commit |
+| Daily regression | Configured and accepted: 06:00 in `Africa/Cairo` | Observe the first actual scheduled run on 2026-10-09 |
+| Run on demand | Manual workflow definition accepted on `main` | A manual dispatch has not yet been independently verified |
+| Allure and Playwright reports | Verified: 48 Allure results, both HTML reports, matching summary, uploaded/downloaded artifact | First cloud reporting path verified; artifact expires 2026-10-22 |
 | Authenticated cases | Disabled for the initial public browsing/cart scope | Optional later: configure a dedicated staging account |
-| Delivered report | GitHub run summary/artifacts plus Codex chat review | Verify the first cloud summary and recurring review |
+| Delivered report | Initial result reported through GitHub Actions and this Codex chat | Observe the first recurring review; no SMTP/webhook receipt claimed |
 | Optional email/webhook | SMTP email and/or generic JSON webhook | Optional later: configure a destination and verify delivery |
-| Ongoing Codex maintenance | Separate review of failures, locator drift, and coverage | An enabled Codex follow-up with access to the repository and reports |
+| Ongoing Codex maintenance | ACTIVE heartbeat: 07:00 Cairo daily in this chat | Observe the first review; computer and Codex app must be running |
 
 The selected repository is public. Its Actions artifacts are visible to signed-in users with repository read access. Treat source, run logs, and artifacts as public evidence. The initial workflow therefore exercises public browsing/cart journeys and does not receive account credentials. Account/customer evidence would need restricted handling before authenticated coverage is enabled.
 
@@ -47,14 +53,14 @@ The webhook is generic JSON; it may require an adapter for a service that expect
 
 Authentication being disabled is visible as skipped authenticated cases. A guest-only green run is evidence for its executed scope, not verification of account and checkout behavior. Enabling authentication with missing or invalid fixtures should fail with a setup diagnostic, rather than silently claiming complete coverage.
 
-## First cloud run
+## Verify activation and run on demand
 
-1. Publish the prepared source, including `package-lock.json` and `.github/workflows/`, to the selected repository's `main` branch. Exclude local credentials, reports, `.venv`, and discovery snapshots. A push to `main` starts a live run immediately.
-2. Ensure GitHub Actions is enabled and allowed to use the pinned official GitHub actions. The workflow requests `contents: read` and does not push source changes.
-3. Start with the defaults: `chromium`, the full public suite, and `RUN_AUTH_TESTS=false`. No account or email secret is needed for the initial scope. Configure optional extensions only when the intended fixtures and destinations exist.
-4. Open **Actions → La Poire daily regression → Run workflow**. Choose the default branch, `all`, and `chromium`. Manual runs from other branches are intentionally skipped by the live job; pull requests receive offline framework checks.
-5. Check the test step, run summary, and `lapoire-js-<run id>-<attempt>` artifact. Verify that any genuine staging defect makes the workflow fail while its report remains downloadable.
-6. Verify the summary/report links open and that Codex can read the run. If optional email/webhook delivery is configured later, verify receipt. Confirm the next daily run appears before considering scheduling activated.
+1. Inspect the linked first cloud run and report artifact. Source publication, cloud execution, report generation, summary counts, and artifact contents are verified. The remaining Chocolates navigation defect stays visible. Future pushes to `main` start a live run immediately. Continue excluding credentials, `.env.js`, generated reports, `.venv`, and discovery snapshots from source.
+2. Keep the defaults for the initial scope: `chromium`, the full public suite, and `RUN_AUTH_TESTS=false`. No account or email secret is needed. Configure optional extensions only when their intended fixtures and destinations exist.
+3. For future runs, check the test step, run summary, and `lapoire-js-<run id>-<attempt>` artifact when the run completes. The initial run verified that a genuine staging defect makes the workflow fail while its report remains downloadable.
+4. To run on demand, open **Actions → La Poire daily regression → Run workflow**. Choose `main`, `all`, and `chromium`. Manual runs from other branches are intentionally skipped by the live job; pull requests receive offline framework checks. The workflow requests `contents: read` and does not push source changes.
+5. Verify that the summary/report links open and Codex can read the completed run. If email/webhook delivery is configured later, verify receipt separately.
+6. Observe the first 06:00 Cairo scheduled run and the 07:00 Codex review on 2026-10-09. This verifies actual scheduled execution separately from the accepted workflow and heartbeat definitions.
 
 The source workflow pins verified official action revisions: [checkout v7.0.1](https://github.com/actions/checkout/commit/3d3c42e5aac5ba805825da76410c181273ba90b1), [setup-node v7.1.0](https://github.com/actions/setup-node/commit/949feb2413d6458794dcd2491c4babbbce0c15c1), and [upload-artifact v7.0.2](https://github.com/actions/upload-artifact/commit/cf430e030ddbb5b0abf93d22962f4752f3646cd9), checked on 2026-10-08. Update these deliberately when maintaining the framework.
 

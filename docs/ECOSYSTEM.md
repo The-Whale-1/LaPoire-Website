@@ -1,29 +1,34 @@
 # La Poire test ecosystem
 
-The ecosystem combines cloud execution, durable evidence, result delivery, and a maintenance loop. GitHub Actions runs the prepared JavaScript POM/Playwright suite daily and on demand. Codex reviews its evidence, improves the page objects and case coverage, and validates proposed changes. Application bugs stay visible until the website is repaired.
+The ecosystem combines cloud execution, durable evidence, result delivery, and a maintenance loop. The JavaScript POM/Playwright suite is published to [The-Whale-1/LaPoire-Website](https://github.com/The-Whale-1/LaPoire-Website) on `main`; its [first cloud regression run](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839846812) completed and its reports were verified. Daily and manual workflow definitions are accepted by GitHub. Codex reviews evidence, improves the page objects and case coverage, and validates proposed changes. Application bugs stay visible until the website is repaired.
 
 ```mermaid
 flowchart LR
     A[Test repository] --> B[Daily or manual GitHub Actions]
     B --> C[Playwright tests and page objects]
     C --> D[Allure and Playwright reports]
-    D --> E[Run summary and email or webhook]
+    D --> E[Actions summary and Codex chat review]
+    E --> K[Optional email or webhook]
     D --> F[Codex failure and coverage review]
     F --> G[Validated test improvement]
     G --> A
     F --> H[Website defect evidence]
     H --> I[Application fix and deployment]
     I --> B
-    J[Separate schedule freshness monitor] --> E
+    J[Optional external schedule freshness monitor] --> E
 ```
 
 ## Execution loop
 
-The full enabled suite runs at 06:00 Cairo time by default. Every case uses page objects so locator changes live in one place. Independent browser contexts separate cookies and guest carts. Serial execution prevents concurrent mutations of a shared authenticated account. The test runner returns a nonzero exit code for real failures; later report generation does not turn a failed test run green.
+The full enabled suite is scheduled for 06:00 Cairo time by default. Its first actual scheduled event, due on 2026-10-09, has not yet been observed. Every case uses page objects so locator changes live in one place. Independent browser contexts separate cookies and guest carts. Serial execution prevents concurrent mutations of a shared authenticated account. The test runner returns a nonzero exit code for real failures; later report generation does not turn a failed test run green.
+
+Initial cloud execution on 2026-10-08 produced **37 passed, 1 failed, 10 skipped, 0 flaky, and 0 healed** out of 48 cases in 202.204 seconds. Chocolates category navigation reached `/list/undefined` and remained a failed test. The 10 skipped cases were outside the enabled public scope. Report generation, summary generation, and artifact upload still succeeded; the downloaded [artifact](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839846812/artifacts/11576543769) contained both HTML reports and 48 Allure results and expires on 2026-10-22. The separate [offline checks](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839847013) passed 18 unit checks and discovered 48 cases.
 
 Artifacts contain per-run Allure results and HTML, a Playwright HTML report, machine-readable results, a Markdown summary, and permitted failure evidence. GitHub keeps the report artifact for 14 days. The initial delivery is GitHub Actions plus a Codex chat follow-up. SMTP and generic webhook delivery are optional extensions. The selected repository is public; its Actions artifacts are visible to signed-in users with repository read access. The initial scope is public browsing/cart journeys, and its artifacts should be treated as public.
 
-The pull-request/push workflow validates helpers and Playwright test discovery offline. It receives no staging account or notification secrets. Live tests use only the reviewed default branch. Test code is not automatically deployed or rewritten by a scheduled workflow.
+The initial result was reported in Actions and this Codex chat. The notification step completed with no optional destination configured, so email/webhook delivery has not been verified. The first artifact excludes a raw `test-results` directory; generated reports retain the redacted diagnostic attachments needed to review this run.
+
+The separate `framework-checks.yml` workflow validates helpers and Playwright test discovery offline on pull requests and pushes. It receives no staging account or notification secrets. Pushes to `main` also trigger the live regression workflow; live tests use only the reviewed default branch. Test code is not automatically deployed or rewritten by the test runner's scheduled workflow.
 
 ## Locator healing loop
 
@@ -35,7 +40,7 @@ Automatic fallback is not an unattended AI browsing agent. It does not grant an 
 
 ## Codex maintenance loop
 
-An enabled Codex recurring follow-up can own the review work. The cloud test runner continues independently of that follow-up. A Codex heartbeat attached to the local chat needs its host and repository/tool access available; it is not itself a cloud runner. Record activation separately from the GitHub schedule.
+The Codex heartbeat `la-poire-daily-quality-review` is ACTIVE at 07:00 Cairo daily in this chat. Its first scheduled review has not yet been observed. It owns review of failures, locator drift, missing runs, and meaningful coverage improvements within the authorized public browsing/cart scope. The computer and Codex app must be running, with repository/tool access available, for this desktop follow-up to execute. GitHub's cloud test runner continues independently of it.
 
 For each meaningful new result, Codex should:
 
@@ -52,7 +57,7 @@ The recurring reviewer should check that the most recent completed cloud run is 
 
 Coverage is measured by executed assertions, not by a large test count. Use `npm run test:list` to enumerate implemented JavaScript cases and the run summary to identify passed, failed, and skipped scope. Existing Python coverage is separate and must not be counted as JavaScript cloud coverage unless its runner is deliberately added.
 
-Prioritize product discovery, categories/search, product detail, cart arithmetic and persistence, delivery location, login/account, and checkout review. Desktop Chromium is the initial baseline; optional Firefox/WebKit execution needs separate verification. The current page objects target desktop layouts. Mobile coverage requires dedicated locators and responsive journeys before a mobile project is enabled; real devices additionally require a device service or dedicated hardware.
+Within the initial scope, prioritize public product discovery, categories/search, product details, cart arithmetic and persistence, delivery location, language, and login/registration form reachability. Authenticated account and checkout-review coverage require explicit later opt-in and staging fixtures. Desktop Chromium is the initial baseline; optional Firefox/WebKit execution needs separate verification. The current page objects target desktop layouts. Mobile coverage requires dedicated locators and responsive journeys before a mobile project is enabled; real devices additionally require a device service or dedicated hardware.
 
 Authenticated flows need a dedicated staging account, valid saved addresses, and stable in-stock fixture products. Changes to the site's catalog or delivery areas may require fixture updates. Invalid fixtures should produce diagnostics; they should not be treated as proof of a website defect or automatically replaced by arbitrary data.
 
@@ -70,6 +75,6 @@ Order confirmation, payment capture, registration, password reset, saved profile
 | Healed | A reviewed alternative locator was used | Inspect selector drift and update the POM when justified |
 | No recent run | The schedule did not complete within the freshness window | Alert and inspect scheduler, Actions limits, and repository state |
 
-Tests provide sampled evidence for covered staging journeys. A daily passing suite cannot guarantee that every website feature works at every moment. Stronger availability assurance combines frequent read-only smoke checks, production monitoring, error telemetry, release checks, and an application team able to fix and deploy defects. The prepared framework does not claim access to or control over those application systems.
+Tests provide sampled evidence for covered staging journeys. A daily passing suite cannot guarantee that every website feature works at every moment. Stronger availability assurance combines frequent read-only smoke checks, production monitoring, error telemetry, release checks, and an application team able to fix and deploy defects. This framework does not claim access to or control over those application systems.
 
 Cloud activation and report delivery instructions are in [CLOUD_SETUP.md](CLOUD_SETUP.md).

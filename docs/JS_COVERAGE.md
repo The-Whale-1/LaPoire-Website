@@ -2,7 +2,7 @@
 
 Inventory date: 8 October 2026. Target: `https://lapoire-stag.endlg.com/`.
 
-The Playwright JavaScript suite implements **48 cases in seven spec files**: **38 public browsing/cart cases** and **10 optional authenticated cases**. Test discovery and syntax checks passed. This inventory describes the assertions in the code; it does not claim that all cases passed against the current website. The initial complete JavaScript baseline ran; harness corrections are undergoing focused verification separately.
+The Playwright JavaScript suite implements **48 cases in seven spec files**: **38 public browsing/cart cases** and **10 optional authenticated cases**. The [first full cloud regression](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839846812) completed with **37 passed, 1 failed, and 10 skipped**. Chocolates navigation remains a website failure. All eight guest-cart cases and all five company-information cases passed after the documented harness corrections. This inventory describes the assertions in the code; skipped account checks are not verified coverage.
 
 The default scope is desktop Chromium, English with an Arabic round trip, real staging products, fresh browser contexts, and guest carts. `RUN_AUTH_TESTS=false` keeps the 10 authenticated cases skipped. The current JavaScript fixture product defaults to **Raspberry Gateau**; `TEST_PRODUCT` can select an explicitly verified available product. The earlier Python product fixture and reports remain separate.
 

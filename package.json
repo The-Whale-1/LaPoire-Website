@@ -7,7 +7,7 @@
     "test": "node scripts/js/run-tests.cjs",
     "test:ci": "node scripts/js/run-tests.cjs",
     "test:smoke": "node scripts/js/run-tests.cjs --grep @smoke",
-    "test:list": "playwright test --list",
+    "test:list": "playwright test --list --reporter=list",
     "test:unit": "node --test e2e/unit/*.test.js scripts/js/unit/*.test.cjs",
     "report": "node scripts/js/generate-report.cjs",
     "report:js": "node scripts/js/generate-report.cjs",
