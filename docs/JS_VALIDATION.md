@@ -154,3 +154,24 @@ The active daily-review prompt now checks expected `schedule` events separately
 from overall report freshness. A recent push or manual run cannot suppress a
 missing-schedule alert; actual trigger and completion timestamps must be reported.
 The configured 09:00 Cairo desktop recurrence and existing scope were preserved.
+
+### Expanded cloud verification after PR #3
+
+[PR #3](https://github.com/The-Whale-1/LaPoire-Website/pull/3) was merged at
+`bf5640f513567f6c5d8fd13076cfcb78113ce029` after GitHub framework checks passed.
+The [October 9 expanded cloud run](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37909670366)
+was triggered by that **push**, not by the missing daily schedule. It completed
+with **38 passed, 1 failed, 10 skipped, 0 flaky, and 0 healed** in 189.6 seconds.
+CART-12 passed in cloud Chromium. All nine guest-cart cases passed; the sole failure
+remains Chocolates opening `/list/undefined`. The failed exit code stayed 1.
+
+Allure generation, summary, and artifact upload succeeded. The downloaded
+[cloud report artifact](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37909670366/artifacts/11605339082)
+contains both HTML reports and matching 49-result Allure/JSON summaries, with no
+raw browser-output directory. It expires on 23 October 2026. Local evidence is
+preserved at `artifacts/js/daily-2026-10-09/cloud-regression.zip`; the earlier focused
+and cloud evidence remains separate. The cloud install reported zero vulnerabilities.
+
+The new 06:07 Cairo cron is verified on `main`. Its next actual scheduled event,
+expected on 10 October, remains unverified. This fresh push run verifies expanded
+coverage and reporting; it does not establish that scheduling works.
