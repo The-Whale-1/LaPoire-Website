@@ -25,6 +25,10 @@ class StorefrontPage extends BasePage {
     return this;
   }
 
+  async reload() {
+    await this.page.reload({ waitUntil: 'domcontentloaded' });
+  }
+
   async selectDeliveryArea(city) {
     const selected = this.zonePopup.locator(css('Select', 'selectedValue'));
     await selected.click();
