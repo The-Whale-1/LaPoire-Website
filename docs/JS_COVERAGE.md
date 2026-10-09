@@ -1,8 +1,10 @@
 # JavaScript coverage inventory
 
-Inventory date: 8 October 2026. Target: `https://lapoire-stag.endlg.com/`.
+Inventory date: 9 October 2026. Target: `https://lapoire-stag.endlg.com/`.
 
-The Playwright JavaScript suite implements **48 cases in seven spec files**: **38 public browsing/cart cases** and **10 optional authenticated cases**. The [first full cloud regression](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839846812) completed with **37 passed, 1 failed, and 10 skipped**. Chocolates navigation remains a website failure. All eight guest-cart cases and all five company-information cases passed after the documented harness corrections. This inventory describes the assertions in the code; skipped account checks are not verified coverage.
+The Playwright JavaScript suite implements **49 cases in seven spec files**: **39 public browsing/cart cases** and **10 optional authenticated cases**. The [first full cloud regression](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839846812), before CART-12 was added, executed 48 cases with **37 passed, 1 failed, and 10 skipped**. That run recorded the Chocolates navigation website failure; all eight guest-cart cases and all five company-information cases passed after the documented harness corrections. This inventory describes the assertions in the code; skipped account checks are not verified coverage.
+
+Maintenance verification on 9 October 2026 completed a locked dependency install, **18 passing offline helper checks**, and discovery of **49 cases**. Focused desktop Chromium execution of **CART-03, CART-05, and CART-12** produced **3 passed, 0 failed, 0 skipped, 0 flaky, and 0 healed** in 49.6 seconds with authentication disabled and zero retries. Allure and the run summary were generated; preserved local evidence is under `artifacts/js/daily-2026-10-09/quantity-regression/`. Full cloud verification of the expanded 49-case inventory remains pending publication of the maintenance change.
 
 The default scope is desktop Chromium, English with an Arabic round trip, real staging products, fresh browser contexts, and guest carts. `RUN_AUTH_TESTS=false` keeps the 10 authenticated cases skipped. The current JavaScript fixture product defaults to **Raspberry Gateau**; `TEST_PRODUCT` can select an explicitly verified available product. The earlier Python product fixture and reports remain separate.
 
@@ -31,8 +33,9 @@ Priority reflects customer risk: **P0** protects core product discovery or baske
 | CART-06 | 1 | P0 | Open full cart from the mini bag | Full-cart route is `/cart`; exact product is visible; there is one row with quantity one and matching unit price. |
 | CART-07 | 1 | P0 | Select two units on product details, then add | Product controls update quantity; bag contains one row with quantity two, matching product/unit price, and subtotal equal to unit price × two. |
 | CART-08 | 1 | P1 | Continue guest bag to checkout | Guest reaches `/auth/login` with visible email/password inputs. No login or order is submitted. |
+| CART-12 | 1 | P1 | Increase guest quantity to two and reload | Before and after reload there is exactly one row with the same exact product name, quantity two, unchanged captured unit price, and subtotal equal to unit price × two. This checks persistence of a changed quantity rather than the default one. |
 | AUTH-02 | 1 | P2 | Open guest login entry | Email input is visible/editable; password input is visible and uses `type=password`; Login control and login route are present. No credentials are entered or submitted. |
-| **Public total** | **38** | | | |
+| **Public total** | **39** | | | |
 
 CAT-01 covers **Tortes, Gateaux, Chocolates, Shareable boxes, Oriental, Bakery, Cakes, Ice Cream Tortes, Bowls, and Jam & Honey**. INFO-01 covers **About Us, Stores, Terms & Conditions, Privacy Policy, and Contact Us**. FOOT-01 checks **Facebook, Instagram, YouTube, Google Play, and App Store**.
 

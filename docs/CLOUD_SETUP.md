@@ -10,22 +10,24 @@ Allure generation, summary generation, and artifact upload succeeded. The summar
 
 The [offline framework checks](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839847013) succeeded: 18 unit checks passed and 48 Playwright cases were discovered. The notification step also succeeded with no optional delivery destination configured; this confirms the Actions/chat reporting path, not SMTP or webhook receipt.
 
-GitHub accepted the daily and manual workflow definitions. The daily schedule is configured for 06:00 Cairo; its first actual scheduled event has not yet been observed and is due on 2026-10-09. The Codex heartbeat `la-poire-daily-quality-review` is ACTIVE at 09:00 Cairo daily in this chat; its first scheduled review has not yet been observed. The initial scope is public browsing/cart journeys. Authentication is disabled, and email/webhook delivery remain optional extensions.
+This maintenance revision moves the daily schedule to 06:07 Cairo with the same `Africa/Cairo` timezone. It takes effect after merge to `main`; the next intended scheduled event on 2026-10-10 remains unverified. The Codex heartbeat `la-poire-daily-quality-review` is ACTIVE at a configured 09:00 Cairo daily in this chat. Its first review arrived on 2026-10-09 at 08:52:09 UTC (11:52 Cairo), so delivery precisely at the configured time has not been verified. The initial scope is public browsing/cart journeys. Authentication is disabled, and email/webhook delivery remain optional extensions.
 
 | Component | Current state | Remaining verification |
 | --- | --- | --- |
 | Source code | Published JavaScript POM, Playwright tests, locked npm dependencies | Publication verified at the linked commit |
-| Daily regression | Configured and accepted: 06:00 in `Africa/Cairo` | Observe the first actual scheduled run on 2026-10-09 |
+| Daily regression | Maintenance revision: 06:07 in `Africa/Cairo`, effective after merge | Verify the next intended scheduled event on 2026-10-10 |
 | Run on demand | Manual workflow definition accepted on `main` | A manual dispatch has not yet been independently verified |
 | Allure and Playwright reports | Verified: 48 Allure results, both HTML reports, matching summary, uploaded/downloaded artifact | First cloud reporting path verified; artifact expires 2026-10-22 |
 | Authenticated cases | Disabled for the initial public browsing/cart scope | Optional later: configure a dedicated staging account |
-| Delivered report | Initial result reported through GitHub Actions and this Codex chat | Observe the first recurring review; no SMTP/webhook receipt claimed |
+| Delivered report | Initial result reported through GitHub Actions and this Codex chat | First desktop review arrived 11:52 Cairo on 2026-10-09; no SMTP/webhook receipt claimed |
 | Optional email/webhook | SMTP email and/or generic JSON webhook | Optional later: configure a destination and verify delivery |
-| Ongoing Codex maintenance | ACTIVE heartbeat: 09:00 Cairo daily in this chat | Observe the first review; computer and Codex app must be running |
+| Ongoing Codex maintenance | ACTIVE heartbeat: configured 09:00 Cairo daily in this chat | First review observed at 11:52 Cairo on 2026-10-09; computer and Codex app must be running |
 
 The selected repository is public. Its Actions artifacts are visible to signed-in users with repository read access. Treat source, run logs, and artifacts as public evidence. The initial workflow therefore exercises public browsing/cart journeys and does not receive account credentials. Account/customer evidence would need restricted handling before authenticated coverage is enabled.
 
 The [patched full regression](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37841095390), after [PR #1](https://github.com/The-Whale-1/LaPoire-Website/pull/1), also completed with **37 passed, 1 failed, 10 skipped, 0 flaky, and 0 healed** in 194.5 seconds. Dependency installation reported zero vulnerabilities. Allure generation, summary and upload succeeded; the downloaded [latest report](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37841095390/artifacts/11577338407) contains both HTML reports with matching 48-result counts. Chocolates navigation remains the sole website failure. The saved heartbeat recurrence was checked directly: daily 09:00 Cairo. Manual UI dispatch remains unverified because the inspected browser session was signed out; no login or settings change was attempted.
+
+Schedule audit on 2026-10-09 at 11:57 Cairo found zero `schedule` events: the expected 06:00 Cairo run under the previous cron was missing. Public API metadata reported the workflow `active`, with the workflow on default branch `main` and the visible scheduling prerequisites satisfied; the repository was recently active, not a fork, and not archived. The cause is unconfirmed. The latest completed cloud run was about 12 hours old, below the 30-hour freshness limit. Repository Actions administration settings were unavailable through public API reads (HTTP 401), and manual dispatch could not be verified in the inspected signed-out browser session. [GitHub documents possible schedule delays or dropped events at hourly peaks](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule); moving execution seven minutes later is preventive, and does not establish or repair a confirmed root cause.
 
 ## Configure variables and secrets once
 
@@ -62,7 +64,7 @@ Authentication being disabled is visible as skipped authenticated cases. A guest
 3. For future runs, check the test step, run summary, and `lapoire-js-<run id>-<attempt>` artifact when the run completes. The initial run verified that a genuine staging defect makes the workflow fail while its report remains downloadable.
 4. To run on demand, open **Actions → La Poire daily regression → Run workflow**. Choose `main`, `all`, and `chromium`. Manual runs from other branches are intentionally skipped by the live job; pull requests receive offline framework checks. The workflow requests `contents: read` and does not push source changes.
 5. Verify that the summary/report links open and Codex can read the completed run. If email/webhook delivery is configured later, verify receipt separately.
-6. Observe the first 06:00 Cairo scheduled run and the 09:00 Codex review on 2026-10-09. This verifies actual scheduled execution separately from the accepted workflow and heartbeat definitions.
+6. After this maintenance revision is merged to `main`, verify the next intended 06:07 Cairo `schedule` event on 2026-10-10. A push run does not verify scheduling. The heartbeat remains configured for 09:00 Cairo; its first review arrived at 11:52 Cairo on 2026-10-09, so continue checking actual delivery times.
 
 The source workflow pins verified official action revisions: [checkout v7.0.1](https://github.com/actions/checkout/commit/3d3c42e5aac5ba805825da76410c181273ba90b1), [setup-node v7.1.0](https://github.com/actions/setup-node/commit/949feb2413d6458794dcd2491c4babbbce0c15c1), and [upload-artifact v7.0.2](https://github.com/actions/upload-artifact/commit/cf430e030ddbb5b0abf93d22962f4752f3646cd9), checked on 2026-10-08. Update these deliberately when maintaining the framework.
 
@@ -85,7 +87,7 @@ Each run keeps artifacts for 14 days. Download evidence before expiry if longer 
 
 ## Schedule and operational limits
 
-The daily schedule uses `cron: '0 6 * * *'` with `timezone: Africa/Cairo`, so it follows Cairo local time and daylight-saving changes. GitHub now supports IANA time zones directly; see [workflow schedule syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onschedule).
+This maintenance revision uses `cron: '7 6 * * *'` with `timezone: Africa/Cairo`, scheduling execution at 06:07 Cairo and following local daylight-saving changes. The timezone is unchanged. The preventive move away from the hourly peak takes effect after merge to `main` and has not yet been verified by a `schedule` event. It is not a confirmed fix for the missing October 9 event. GitHub supports IANA time zones directly; see [workflow schedule syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onschedule).
 
 The regression workflow allows one active staging run at a time and does not cancel an active run when another is requested. GitHub concurrency may replace older pending runs; this is a guard against overlap, not an unlimited run queue. Avoid starting a local authenticated run while cloud tests use the same account.
 

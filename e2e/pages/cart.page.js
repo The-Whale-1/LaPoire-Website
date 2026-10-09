@@ -13,6 +13,14 @@ class CartPage extends BasePage {
     return amount(await this.totalPrice.innerText());
   }
 
+  async incrementQuantity(row = this.rows.first()) {
+    await row.getByText('add', { exact: true }).click();
+  }
+
+  async decrementQuantity(row = this.rows.first()) {
+    await row.getByText('remove', { exact: true }).click();
+  }
+
   async close() {
     await this.panel.locator(css('MiniCart', 'close')).click();
     await expect(this.page.locator(css('MiniCart', 'MiniCartOpened'))).toBeHidden();

@@ -117,3 +117,40 @@ Desktop follow-ups require the computer and app running; GitHub tests run indepe
 Unverified scope: authenticated/customer flows, submitted orders or payments, mobile
 layouts, Firefox/WebKit, production availability, and application deployment. This
 repository contains tests, not the deployed application source.
+
+
+## Daily review — 9 October 2026
+
+The first desktop heartbeat arrived at 08:52 UTC (11:52 Cairo); this confirms a
+review wakeup, while on-time 09:00 delivery is not established. At 08:57 UTC,
+GitHub reported the live workflow active and zero `schedule` events. The expected
+06:00 Cairo event was absent. The default-branch workflow and supported Cairo time
+zone were present; the repository was active, public, and neither forked nor
+archived. No root cause was established. Public API access could not inspect
+private Actions administration settings.
+
+The latest completed cloud report remained the October 8 run linked above:
+**37 passed, 1 failed, 10 skipped, 0 flaky, 0 healed**. Job logs and the matching
+48-result Allure/JSON artifact were checked again; the artifact was unexpired.
+Its age was about 12 hours, below the 30-hour freshness threshold. Missing today's
+scheduled event is reported separately from a stale completed run.
+
+Added **CART-12**, verifying an increased guest quantity survives reload with
+exact product identity, one row, quantity two, unchanged unit price, and doubled
+subtotal. A locked install reported zero vulnerabilities; all 18 helper checks
+passed; discovery found **49 cases (39 public, 10 optional authenticated)**.
+Focused CART-03, CART-05, and CART-12 passed **3/3 in 49.6 seconds**, with zero
+retries, flaky results, or healing. Allure generated the three actual results and
+the summary preserved exit zero. The focused pass does not clear the separate
+Chocolates defect or establish that the entire expanded suite passed.
+
+The maintenance change moves the planned daily trigger to **06:07 Cairo**, following
+[GitHub's recommendation to avoid the hourly scheduling peak](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule).
+This is preventive; it does not establish the cause of today's missing event or
+prove that future scheduled runs will execute. Verify the next actual `schedule`
+event independently of any maintenance push run. Authentication remains disabled.
+
+The active daily-review prompt now checks expected `schedule` events separately
+from overall report freshness. A recent push or manual run cannot suppress a
+missing-schedule alert; actual trigger and completion timestamps must be reported.
+The configured 09:00 Cairo desktop recurrence and existing scope were preserved.

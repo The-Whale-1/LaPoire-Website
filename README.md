@@ -1,6 +1,6 @@
 # La Poire quality ecosystem
 
-JavaScript + Playwright + Page Object Model + Allure for [La Poire staging](https://lapoire-stag.endlg.com/). Tests run daily at **06:00 Africa/Cairo**, on test code changes to main, and on demand through GitHub Actions.
+JavaScript + Playwright + Page Object Model + Allure for [La Poire staging](https://lapoire-stag.endlg.com/). The daily schedule is **06:07 Africa/Cairo**. Tests also run on test code changes to main and on demand through GitHub Actions.
 
 The initial scope is public browsing, delivery, search, product details, categories, sorting/filtering, language, guest cart, and login form reachability. Account and checkout-review checks require explicit opt-in and staging fixtures. No orders, payments, account creation, password resets, profile saves, complaints, or cake requests are submitted. This project detects site defects; it does not contain the deployed website source and cannot promise zero downtime.
 

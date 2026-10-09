@@ -35,10 +35,10 @@ test.describe('Guest shopping bag', { tag: ['@regression', '@cart'] }, () => {
   test('CART-03: Increase and decrease quantity recalculates the total', async () => {
     const { cart, product } = await populatedCart();
     const row = cart.rows.first();
-    await row.getByText('add', { exact: true }).click();
+    await cart.incrementQuantity(row);
     await expect(row.locator('input[name="quantity"]')).toHaveValue('2');
     await expect.poll(() => cart.total()).toBe(product.catalogPrice * 2);
-    await row.getByText('remove', { exact: true }).click();
+    await cart.decrementQuantity(row);
     await expect(row.locator('input[name="quantity"]')).toHaveValue('1');
     await expect.poll(() => cart.total()).toBe(product.catalogPrice);
   });
@@ -55,7 +55,7 @@ test.describe('Guest shopping bag', { tag: ['@regression', '@cart'] }, () => {
   test('CART-05: Guest item, quantity and subtotal persist after reload', async () => {
     const { cart, product } = await populatedCart();
     await cart.close();
-    await shop.page.reload({ waitUntil: 'domcontentloaded' });
+    await shop.reload();
     const restored = await shop.cart();
     await expect(restored.rows).toHaveCount(1);
     await expect(restored.rows.first().locator(css('MiniCart', 'name'))).toHaveText(product.name);
@@ -81,5 +81,24 @@ test.describe('Guest shopping bag', { tag: ['@regression', '@cart'] }, () => {
   test('CART-08: Guest checkout requires customer sign-in', async () => {
     const { cart } = await populatedCart();
     await cart.guestCheckout();
+  });
+
+  test('CART-12: Changed guest quantity, unit price and subtotal survive reload', async () => {
+    const { cart, product } = await populatedCart();
+    await cart.incrementQuantity();
+    await expect(cart.rows).toHaveCount(1);
+    await expect(cart.rows.first().locator(css('MiniCart', 'name'))).toHaveText(product.name);
+    await expect(cart.rows.first().locator('input[name="quantity"]')).toHaveValue('2');
+    expect(amount(await cart.rows.first().locator(css('MiniCart', 'price')).innerText())).toBe(product.catalogPrice);
+    await expect.poll(() => cart.total()).toBe(product.catalogPrice * 2);
+
+    await cart.close();
+    await shop.reload();
+    const restored = await shop.cart();
+    await expect(restored.rows).toHaveCount(1);
+    await expect(restored.rows.first().locator(css('MiniCart', 'name'))).toHaveText(product.name);
+    await expect(restored.rows.first().locator('input[name="quantity"]')).toHaveValue('2');
+    expect(amount(await restored.rows.first().locator(css('MiniCart', 'price')).innerText())).toBe(product.catalogPrice);
+    await expect.poll(() => restored.total()).toBe(product.catalogPrice * 2);
   });
 });
