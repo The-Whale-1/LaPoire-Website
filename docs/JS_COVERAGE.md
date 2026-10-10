@@ -1,10 +1,12 @@
 # JavaScript coverage inventory
 
-Inventory date: 9 October 2026. Target: `https://lapoire-stag.endlg.com/`.
+Inventory date: 10 October 2026. Target: `https://lapoire-stag.endlg.com/`.
 
-The Playwright JavaScript suite implements **49 cases in seven spec files**: **39 public browsing/cart cases** and **10 optional authenticated cases**. The [first full cloud regression](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839846812), before CART-12 was added, executed 48 cases with **37 passed, 1 failed, and 10 skipped**. That run recorded the Chocolates navigation website failure; all eight guest-cart cases and all five company-information cases passed after the documented harness corrections. This inventory describes the assertions in the code; skipped account checks are not verified coverage.
+The Playwright JavaScript suite implements **50 cases in seven spec files**: **40 public browsing/cart cases** and **10 optional authenticated cases**. The [first full cloud regression](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37839846812), before CART-12 was added, executed 48 cases with **37 passed, 1 failed, and 10 skipped**. That run recorded the Chocolates navigation website failure; all eight guest-cart cases and all five company-information cases passed after the documented harness corrections. This inventory describes the assertions in the code; skipped account checks are not verified coverage.
 
 Maintenance verification on 9 October 2026 completed a locked dependency install, **18 passing offline helper checks**, and discovery of **49 cases**. Focused desktop Chromium execution of **CART-03, CART-05, and CART-12** produced **3 passed, 0 failed, 0 skipped, 0 flaky, and 0 healed** in 49.6 seconds with authentication disabled and zero retries. Allure and the run summary were generated; preserved local evidence is under `artifacts/js/daily-2026-10-09/quantity-regression/`. Full cloud verification on 9 October completed after [PR #3](https://github.com/The-Whale-1/LaPoire-Website/pull/3): the [push-triggered expanded run](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37909670366) produced **38 passed, 1 failed, 10 skipped, 0 flaky, and 0 healed** in 189.6 seconds. All nine guest-cart cases passed. The sole failure remains Chocolates navigation to `/list/undefined`. Both HTML reports and matching 49-result Allure/JSON summaries were verified in the [report artifact](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37909670366/artifacts/11605339082). This push run does not verify the separately missing daily scheduled event.
+
+Maintenance verification on 10 October added **SEARCH-02** after observing the actual empty-state DOM and successful recovery with the known product. A locked install reported zero vulnerabilities, **18 helper checks passed**, and discovery found **50 cases**. Focused desktop Chromium SEARCH-01/SEARCH-02 produced **2 passed, 0 failed, 0 skipped, 0 flaky, and 0 healed** in 32.9 seconds with authentication disabled and zero retries. Both HTML reports and matching two-result Allure/JSON summaries were verified; evidence is preserved under `artifacts/js/daily-2026-10-10/search-regression/`. This focused result does not clear the independent Chocolates defect or establish a complete expanded-suite pass.
 
 The default scope is desktop Chromium, English with an Arabic round trip, real staging products, fresh browser contexts, and guest carts. `RUN_AUTH_TESTS=false` keeps the 10 authenticated cases skipped. The current JavaScript fixture product defaults to **Raspberry Gateau**; `TEST_PRODUCT` can select an explicitly verified available product. The earlier Python product fixture and reports remain separate.
 
@@ -23,6 +25,7 @@ Priority reflects customer risk: **P0** protects core product discovery or baske
 | FOOT-01 | 5 | P2 | Inspect social/app-store footer links | Link is visible; destination hostname exactly matches the expected service; `target` is `_blank`. External pages are not opened. |
 | PROD-01 | 1 | P0 | Open configured Gateaux product | Detail route is `/product/`; displayed product name and In Stock text are visible; quantity starts at one; numeric positive detail price exactly equals captured catalog price. |
 | SEARCH-01 | 1 | P0 | Search for and open the configured product | Exact matching product link appears; opening it reaches `/product/`; matching name, positive price, and default quantity of one appear. |
+| SEARCH-02 | 1 | P1 | Search a nonexistent product, then search the configured product | Starting from a populated homepage, the safe unique query reaches a catalog route with its exact keyword; visible `No Results Found` appears and catalog card count becomes zero. Searching the known product removes the empty state and exposes one exact matching product link; opening it reaches matching details with positive price, catalog/detail price agreement, and quantity one. |
 | SORT-01 | 2 | P1 | Select Lowest Price and Highest Price | More than one displayed price exists; every rendered price obeys the selected numeric ascending/descending order. |
 | FILTER-01 | 1 | P1 | Apply and clear a populated price range | Range is derived from observed distinct product prices; at least one returned product exists; every returned price lies within the selected bounds; clearing restores original limits and products above the restricted upper bound. |
 | CART-01 | 1 | P1 | Open a new guest bag | Explicit empty-bag message is visible and cart row count is zero. |
@@ -35,7 +38,7 @@ Priority reflects customer risk: **P0** protects core product discovery or baske
 | CART-08 | 1 | P1 | Continue guest bag to checkout | Guest reaches `/auth/login` with visible email/password inputs. No login or order is submitted. |
 | CART-12 | 1 | P1 | Increase guest quantity to two and reload | Before and after reload there is exactly one row with the same exact product name, quantity two, unchanged captured unit price, and subtotal equal to unit price × two. This checks persistence of a changed quantity rather than the default one. |
 | AUTH-02 | 1 | P2 | Open guest login entry | Email input is visible/editable; password input is visible and uses `type=password`; Login control and login route are present. No credentials are entered or submitted. |
-| **Public total** | **39** | | | |
+| **Public total** | **40** | | | |
 
 CAT-01 covers **Tortes, Gateaux, Chocolates, Shareable boxes, Oriental, Bakery, Cakes, Ice Cream Tortes, Bowls, and Jam & Honey**. INFO-01 covers **About Us, Stores, Terms & Conditions, Privacy Policy, and Contact Us**. FOOT-01 checks **Facebook, Instagram, YouTube, Google Play, and App Store**.
 
@@ -58,7 +61,7 @@ These **10 implemented cases are not currently executed in the default browsing/
 
 ## Limits and result interpretation
 
-- There are **no implemented backend negative tests** in this JavaScript suite. AUTH-02 checks login entry and password masking; it does not test rejection of empty fields, malformed email, incorrect credentials, lockout, or server errors. Successful named-product search does not establish no-result behavior. Valid price filtering does not establish invalid-boundary handling.
+- There are **no implemented backend negative tests** in this JavaScript suite. AUTH-02 checks login entry and password masking; it does not test rejection of empty fields, malformed email, incorrect credentials, lockout, or server errors. SEARCH-02 verifies one unique no-result query and recovery; whitespace normalization and Arabic searches remain unverified. Valid price filtering does not establish invalid-boundary handling.
 - Product, sorting, price-range, and cart assertions operate on rendered UI state. They do not independently verify stock reservation, backend order totals, tax rules, discounts, payment-provider outcomes, or push/email delivery.
 - Authenticated cases, mobile layouts, Firefox, WebKit, production availability, accessibility compliance, performance/load, and visual regression must not be counted as currently verified default coverage.
 - Registration, reset-password requests, profile/address saves, complaints, cake requests, order creation, and payment capture are outside the current execution scope. The request guard must preserve that boundary.
@@ -72,7 +75,6 @@ The following are **proposed scenarios, not implemented or passed tests**. Add t
 
 | Proposed ID | Priority | Scenario | Meaningful expected outcome | Requirement or fixture to resolve |
 | --- | --- | --- | --- | --- |
-| SEARCH-02 | P1 | Search a unique nonexistent product | Explicit no-results state appears; no stale matching cards remain; customer can return to normal browsing. | Inspect actual empty-state DOM and define the safe test query. |
 | SEARCH-03 | P1 | Search with surrounding whitespace and supported Arabic text | Documented normalization finds the intended product; a matching result opens the correct identity. | Confirm normalization rules and an existing Arabic/English product fixture. |
 | CART-09 | P0 | Add two distinct available products | Exactly two unique product rows appear; each unit price/quantity is correct; subtotal equals the sum of both lines. | Two stable in-stock products in the same delivery area. |
 | CART-10 | P1 | Add the same product twice | Documented row consolidation/increment behavior occurs; no unexpected duplicate row or lost unit; subtotal reflects the final quantity. | Confirm the site's intended duplicate-add rule. |
