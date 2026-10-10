@@ -175,3 +175,79 @@ and cloud evidence remains separate. The cloud install reported zero vulnerabili
 The new 06:07 Cairo cron is verified on `main`. Its next actual scheduled event,
 expected on 10 October, remains unverified. This fresh push run verifies expanded
 coverage and reporting; it does not establish that scheduling works.
+
+
+## Search no-result maintenance — 10 October 2026
+
+A guarded anonymous staging probe confirmed that the safe query
+`lapoire-qa-no-product-20261010-7e6c9b` navigates to its catalog search route,
+shows exact visible `No Results Found`, and renders zero catalog cards. A second
+search for Raspberry Gateau restored one matching catalog card and removed the
+empty state. The probe had no blocked business requests; third-party telemetry
+and unknown external writes remained suppressed and audited. Public observations
+are preserved in `artifacts/js/daily-2026-10-10/search-empty-probe/`.
+
+Added SEARCH-02 to normal public regression coverage, with the observed empty-state
+locator in StorefrontPage and the business assertions in catalog.spec.js. It starts
+with populated cards, verifies the exact search keyword and zero stale cards, then
+recovers through known-product search and checks one exact product link, matching
+detail name, positive catalog/detail price agreement, and default quantity one.
+No known failure was disabled or healed; authentication remains disabled.
+
+Two initial harness issues were retained separately. The standalone probe first
+used Playwright's default five-second expect timeout outside the configured runner;
+its readiness setup was corrected to use the existing 20-second UI budget. The
+first focused validation produced **1 passed, 1 failed, 0 skipped, 0 flaky, and
+0 healed** in 47.4 seconds, with exit one and both reports generated. The new URL
+predicate matcher timed out even though its reported URL matched the expected
+route and keyword. Inspection of the installed Playwright matcher showed that
+predicate matching delegates to waitForURL and waits for page load. The test now
+uses the existing catalog-route assertion and polls the same exact keyword, while
+preserving every empty-state, product, quantity, and price assertion. The initial
+failed run is preserved in
+`artifacts/js/daily-2026-10-10/search-initial-validation/`.
+
+Final verification completed `npm ci` with zero vulnerabilities, **18 passing
+offline checks**, and discovery of **50 cases in seven files: 40 public and 10
+optional authenticated cases**. Focused Chromium SEARCH-01 and SEARCH-02 passed
+**2/2 in 32.9 seconds**, with **0 failed, 0 skipped, 0 flaky, and 0 healed**, zero
+retries, and exit zero. Allure generated exactly two actual results; its statistic
+and JSON summary agree, and both HTML reports exist. Final evidence is preserved
+in `artifacts/js/daily-2026-10-10/search-regression/`. This focused result does not
+establish a full 50-case cloud pass or repair the deployed Chocolates category.
+The website source is absent from this repository.
+
+## Daily cloud and schedule review — 10 October 2026
+
+The heartbeat arrived at 08:40:47 UTC (11:40:47 Cairo). The saved automation is
+ACTIVE with a 09:00 Cairo daily recurrence; observed delivery is separate from
+that configuration. The desktop host and Codex app must be available for review,
+while GitHub execution is independent of them.
+
+Current main configures cron `7 6 * * *` with `Africa/Cairo`. The workflow is active,
+but the event=schedule query returned zero runs: today's expected 06:07 Cairo
+scheduled event was absent about 5 hours 34 minutes later. Its cause remains
+unconfirmed. At review start, October 9 attempt 2 was about 20 hours 33 minutes old,
+within the 30-hour freshness limit. That recent rerun did not clear the missing
+scheduled-event alert.
+
+Started a recovery rerun through the authorized GitHub connection. [Attempt 3](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37909670366/job/114175069516)
+started at 08:44:10 UTC and completed at 08:47:55 UTC (11:47:55 Cairo). The original
+workflow event remains push; this is a recovery rerun, not a schedule event.
+The current main test source executed **49 cases: 38 passed, 1 failed, 10 skipped,
+0 flaky, and 0 healed** in 176.620 seconds. Authentication remained disabled.
+Chocolates again reached `/list/undefined`; the test exit code remained 1. There
+were no runner infrastructure errors. The previous investigation identified a
+menu category reference whose API response is null, followed by unguarded slug
+routing; application source/catalog configuration is still required for repair.
+
+Allure, summary and artifact upload succeeded. The [attempt-3 artifact](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/37909670366/artifacts/11664657822)
+expires on 24 October. Its downloaded ZIP SHA256 matches GitHub; summary,
+flattened Playwright results, 49 raw Allure results and 49 generated Allure cases
+agree. Both HTML reports are present; no raw browser-output files were uploaded.
+Evidence is preserved in
+`artifacts/js/daily-2026-10-10/cloud-recovery/cloud-attempt-3.zip`.
+
+The recovery produces fresh cloud results while daily scheduling remains
+unresolved. The new SEARCH-02 case is verified separately above; it is not part
+of this 49-case cloud run. A complete 50-case cloud pass is not established.

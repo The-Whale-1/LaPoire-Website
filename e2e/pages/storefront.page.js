@@ -12,6 +12,7 @@ class StorefrontPage extends BasePage {
     this.footer = page.locator(css('FooterDesktop', 'FooterDesktop'));
     this.zonePopup = page.locator(css('ZonePopup', 'popup'));
     this.cards = page.locator(css('ProductsListItem', 'ProductsListItem'));
+    this.noSearchResults = page.getByText('No Results Found', { exact: true });
     this.area = this.header.locator(css('TopHeader', 'CurrentZoneText'));
   }
 

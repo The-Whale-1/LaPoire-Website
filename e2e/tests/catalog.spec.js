@@ -29,6 +29,28 @@ test.describe('Products, search, sorting and filters', { tag: '@regression' }, (
     await expect(shop.page.getByText(appConfig.product, { exact: true }).filter({ visible: true }).last()).toBeVisible();
   });
 
+  test('SEARCH-02: A nonexistent product clears results and a known-product search recovers', async ({ appConfig }) => {
+    const missingProduct = 'lapoire-qa-no-product-20261010-7e6c9b';
+    expect(await shop.cards.count(), 'The populated homepage establishes products before the empty search').toBeGreaterThan(0);
+    await shop.search(missingProduct);
+    await expect(shop.page).toHaveURL(/\/list\//);
+    await expect.poll(() => new URL(shop.page.url()).searchParams.get('keyword')).toBe(missingProduct);
+    await expect(shop.noSearchResults).toBeVisible();
+    await expect(shop.cards, 'An empty search must remove stale catalog cards').toHaveCount(0);
+
+    await shop.search(appConfig.product);
+    await expect(shop.page).toHaveURL(/\/list\//);
+    await expect.poll(() => new URL(shop.page.url()).searchParams.get('keyword')).toBe(appConfig.product);
+    await expect(shop.noSearchResults).toBeHidden();
+    const recovered = shop.cards.getByRole('link', { name: appConfig.product, exact: true });
+    await expect(recovered, 'Recovery must expose one exact matching product link').toHaveCount(1);
+    await expect(recovered).toBeVisible();
+    const product = await shop.product();
+    await expect(shop.page.getByText(appConfig.product, { exact: true }).filter({ visible: true }).last()).toBeVisible();
+    expect(await product.price()).toBeGreaterThan(0);
+    await expect(product.quantity).toHaveValue('1');
+  });
+
   for (const [label, descending] of [['Lowest Price', false], ['Highest Price', true]]) {
     test(`SORT-01: ${label} sorts every rendered product price`, async () => {
       await shop.category('Gateaux');
