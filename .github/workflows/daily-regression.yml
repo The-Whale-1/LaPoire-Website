@@ -132,6 +132,7 @@ jobs:
           TEST_CITY: ${{ vars.TEST_CITY }}
           CHECKOUT_CITY: ${{ vars.CHECKOUT_CITY }}
           TEST_PRODUCT: ${{ vars.TEST_PRODUCT }}
+          TEST_SECOND_PRODUCT: ${{ vars.TEST_SECOND_PRODUCT }}
         run: |
           set +e
           if [[ "$SELECTED_SUITE" == smoke ]]; then
