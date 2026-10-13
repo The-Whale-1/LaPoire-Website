@@ -83,6 +83,46 @@ test.describe('Guest shopping bag', { tag: ['@regression', '@cart'] }, () => {
     await cart.guestCheckout();
   });
 
+  test('CART-09: Two distinct products retain their unit prices, quantities and combined subtotal', async ({ appConfig }) => {
+    const fixtures = [
+      { name: appConfig.product, quantity: 1 },
+      { name: appConfig.secondProduct, quantity: 2 },
+    ];
+    for (const fixture of fixtures) {
+      expect(fixture.name, 'CART-09 requires two explicitly configured, nonempty Gateaux product names').not.toBe('');
+    }
+    expect(new Set(fixtures.map(fixture => fixture.name.toLowerCase())).size,
+      'CART-09 requires distinct TEST_PRODUCT and TEST_SECOND_PRODUCT fixtures').toBe(2);
+
+    const products = [];
+    let cart;
+    for (const fixture of fixtures) {
+      if (cart) await cart.close();
+      await shop.category('Gateaux');
+      const product = await shop.product(fixture.name);
+      await expect(shop.page.locator(css('product', 'ProducName'))).toHaveText(fixture.name);
+      const stock = shop.page.getByText('In Stock', { exact: false }).filter({ visible: true }).first();
+      await expect(stock).toHaveText(/^\d+\s+In Stock$/);
+      const advertisedStock = Number((await stock.innerText()).trim().split(/\s+/)[0]);
+      expect(advertisedStock, `Fixture shortage: ${fixture.name} must advertise stock for the requested ${fixture.quantity} unit(s)`).toBeGreaterThanOrEqual(fixture.quantity);
+      await product.add(fixture.quantity);
+      cart = await shop.cart();
+      products.push({ ...fixture, unitPrice: product.catalogPrice });
+    }
+
+    await expect(cart.rows).toHaveCount(2);
+    for (const product of products) {
+      const row = cart.namedRow(product.name);
+      await expect(row, 'Each configured product must have exactly one guest-cart row').toHaveCount(1);
+      await expect(row.locator('input[name="quantity"]')).toHaveValue(String(product.quantity));
+      expect(await cart.unitPrice(row), `Unit price must remain correct for ${product.name}`).toBe(product.unitPrice);
+    }
+    const actualNames = (await cart.productNames.allTextContents()).map(name => name.trim()).sort();
+    expect(actualNames).toEqual(products.map(product => product.name).sort());
+    const expectedSubtotal = products.reduce((total, product) => total + product.unitPrice * product.quantity, 0);
+    await expect.poll(() => cart.total()).toBe(expectedSubtotal);
+  });
+
   test('CART-12: Changed guest quantity, unit price and subtotal survive reload', async () => {
     const { cart, product } = await populatedCart();
     await cart.incrementQuantity();

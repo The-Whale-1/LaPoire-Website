@@ -44,6 +44,7 @@ function loadConfig(env = process.env) {
     latitude: number(env, 'TEST_LATITUDE', 30.0444, -90, 90),
     longitude: number(env, 'TEST_LONGITUDE', 31.2357, -180, 180),
     product: (env.TEST_PRODUCT || 'Raspberry Gateau').trim(),
+    secondProduct: (env.TEST_SECOND_PRODUCT || 'Strawberry Tart').trim(),
     timeout: number(env, 'UI_TIMEOUT_MS', 20000, 1000, 120000, true),
     retries: number(env, 'TEST_RETRIES', 0, 0, 2, true),
     healingTimeout: number(env, 'HEALING_TIMEOUT_MS', 1500, 0, 10000, true),

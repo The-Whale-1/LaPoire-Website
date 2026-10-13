@@ -251,3 +251,85 @@ Evidence is preserved in
 The recovery produces fresh cloud results while daily scheduling remains
 unresolved. The new SEARCH-02 case is verified separately above; it is not part
 of this 49-case cloud run. A complete 50-case cloud pass is not established.
+
+## Two-product guest-cart maintenance — 13 October 2026
+
+Public fixture observation used the configured 20-second assertion budget,
+authentication disabled, and the existing request safety guard. In Zamalek's
+Gateaux category, **Raspberry Gateau** showed 75 EGP in catalog and details;
+**Strawberry Tart** showed 80 EGP in both. Both details had default quantity one
+and the actual **500 In Stock** label. Public observation data is retained in
+`artifacts/js/daily-2026-10-13/catalog-observation.json` and
+`fixture-details-observation.json`. No alternate product is selected
+automatically if a configured fixture disappears.
+
+Two initial probe errors were harness selector errors, preserved separately
+under `catalog-probe-initial/` and `catalog-probe-stock-selector/`: the exact
+product text matched both breadcrumb and detail name, and the guessed exact
+`In Stock` text omitted the numeric stock prefix. The corrected probe uses the
+observed detail-name element and checks the numeric stock label, and passed.
+These probe errors do not establish a website defect or alter existing tests.
+
+Added **CART-09** to normal public regression with first-product quantity one
+and second-product quantity two. It requires distinct, nonempty explicit
+`TEST_PRODUCT` / `TEST_SECOND_PRODUCT` names; the latter defaults to the observed
+Strawberry Tart. Both details must retain the configured identity, positive
+catalog/detail price agreement, and the observed In Stock label. Before adding,
+advertised stock must be at least the requested quantity; shortages fail with an
+explicit fixture diagnostic rather than a misleading subtotal failure. The bag must
+have exactly two uniquely named rows, each matching captured unit price and
+selected quantity. Its subtotal must exactly equal the sum of both extended
+lines (235 EGP in this observation). Row identity and unit-price lookup are
+centralized in CartPage; business assertions remain in cart.spec.js. No existing
+assertion, known failure, locator fallback, or authenticated scope was changed.
+
+Verification completed `npm ci` with zero vulnerabilities, **18 passing helper
+checks**, and discovery of **51 cases in seven files: 41 public and 10 optional
+authenticated cases**. Focused Chromium **CART-02/CART-09 passed 2/2 in 36.1
+seconds**, with **0 failed, 0 skipped, 0 flaky, and 0 healed**, zero retries, and
+exit zero. Both reports were generated; JSON counts, two raw Allure results, and
+generated Allure statistics agree, and both HTML reports exist. Final focused
+evidence is preserved under
+`artifacts/js/daily-2026-10-13/cart-stock-verified-regression/`. The initial 2/2
+passing run in 34.8 seconds is retained under `cart-regression/`; prior top-level outputs were
+retained under `pre-cart-regression/` before runner reset. This result verifies
+the focused cart changes only. A full 51-case cloud result is still required,
+and the independent Chocolates navigation failure is preserved.
+
+## Scheduled cloud and timing review — 13 October 2026
+
+The current-main workflow is active with cron `7 6 * * *` and IANA timezone
+Africa/Cairo. The schedule API now returns four completed daily runs dated
+10–13 October. The 10 October event arrived after that day's initial missing-event
+audit. No daily date is missing in this interval, but timely execution is not
+established: today's event was created at 13:21:15 Cairo (10:21:15 UTC), **7 hours
+14 minutes after the configured 06:07**. Its regression job started two seconds
+later. This places the observed delay before job allocation; it does not prove
+its root cause. GitHub's documented cron/timezone syntax matches the workflow.
+[GitHub documents possible schedule delays and dropped events under high load](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule),
+but high load is not a verified cause for these observed delays.
+
+The [13 October scheduled run](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/38382772985)
+completed its job at **13:25:32 Cairo (10:25:32 UTC)**, about 9 hours 51 minutes
+before this review and inside the 30-hour freshness limit. It executed the
+50-case main revision with **39 passed, 1 failed, 10 skipped, 0 flaky, and
+0 healed**, in 217.539 seconds. The sole failure remains Chocolates navigating
+to `/list/undefined`. Authentication remained disabled and test exit code 1
+was preserved. There were no runner infrastructure errors or retries.
+
+Allure generation, summary generation and upload succeeded. The [scheduled report artifact](https://github.com/The-Whale-1/LaPoire-Website/actions/runs/38382772985/artifacts/11803499409)
+expires on 27 October. Its downloaded ZIP SHA256 matches GitHub; summary,
+flattened Playwright, 50 raw Allure results and 50 generated Allure cases agree.
+Both HTML reports are present; no raw browser-output directory was uploaded.
+Evidence is preserved in
+`artifacts/js/daily-2026-10-13/scheduled-cloud/scheduled-50-cases.zip`.
+
+The desktop review remains ACTIVE at a saved daily **09:00 Cairo** recurrence.
+This heartbeat arrived at **23:16:20 Cairo (20:16:20 UTC)**. The configured
+recurrence, observed arrival and requirement for the desktop host/app to be
+available are separate; the delivery delay's cause is unconfirmed. GitHub's
+scheduled test execution is independent of the desktop reviewer.
+
+The new CART-09 case is verified separately above and is not included in this
+50-case scheduled run. Application/CMS access remains unavailable for repair of
+the deployed Chocolates defect. Existing failures and earlier evidence are retained.
